@@ -13,9 +13,9 @@ public partial class Ta
 
     public int? LabId { get; set; }
 
-    public virtual ICollection<Agenda> Agenda { get; set; } = new List<Agenda>();
+    public virtual ICollection<Agenda>? Agenda { get; set; } = new List<Agenda>();
 
     public virtual Lab? Lab { get; set; }
 
-    public virtual ICollection<Student> Students { get; set; } = new List<Student>();
+    public virtual ICollection<Student>? Students { get; set; } = new List<Student>();
 }
