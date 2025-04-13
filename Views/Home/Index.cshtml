@@ -1,8 +1,119 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@{
+    ViewData["Title"] = "Home";
 }
+<style>
+    h2{
+        text-align:center;
+        font-size:60px;
+    }
+</style>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">Welcome to TAMS</h1>
+        <p class="lead text-muted">
+            Your centralized Teaching Assistant Management System to help you stay organized, efficient, and connected.
+        </p>
+        @if (SignInManager.IsSignedIn(User))
+        {
+
+        }
+        else
+        {
+            
+        <a class="btn btn-primary btn-lg mt-3" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        }
+
+    </div>
+
+    <div class="row g-4" >
+        <div class="col-6 m-auto" style="height:100%">
+            <div id="featureCarousel" class="carousel slide" data-bs-ride="carousel" >
+                <div class="carousel-inner" >
+
+                    <div class="carousel-item active ">
+                        <div class="d-flex justify-content-center">
+                            <div class="card shadow-sm homeCard w-75 d-flex align-content-center justify-content-center m-auto" style="z-index:2;position:relative;padding:150px 0;">
+                                <a asp-controller="Labs" asp-action="Index" class="text-decoration-none text-dark">
+                                    <div class="card-body ">
+                                        <h2 class="card-title">Lab Organization</h2>
+                                        @* <p class="card-text">Easily create, update, and manage lab sessions across different courses with structured layouts and student lists.</p> *@
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="d-flex justify-content-center">
+                            <div class="card shadow-sm homeCard w-75 d-flex align-content-center justify-content-center" style="z-index:2;position:relative;padding:150px 0;">
+                                <a asp-controller="Students" asp-action="Index" class="text-decoration-none text-dark">
+                                    <div class="card-body">
+                                        <h2 class="card-title">Attendance & Grades</h2>
+                                        @* <p class="card-text">Track student attendance and grade submissions in real time with intuitive tools and reports.</p> *@
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="d-flex justify-content-center">
+                            <div class="card shadow-sm homeCard w-75 d-flex align-content-center justify-content-center" style="z-index:2;position:relative;padding:150px 0;">
+                                <a asp-controller="Meetings" asp-action="Index" class="text-decoration-none text-dark">
+                                <div class="card-body">
+                                    <h2 class="card-title">Online Meetings</h2>
+                                    @* <p class="card-text">Schedule and manage online meetings with students, integrating seamlessly with calendar tools.</p> *@
+                                </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="d-flex justify-content-center">
+                            <div class="card shadow-sm homeCard w-75 d-flex align-content-center justify-content-center" style="z-index:2;position:relative;padding:150px 0;">
+                                <a asp-controller="Courses" asp-action="Index" class="text-decoration-none text-dark">
+                                <div class="card-body">
+                                    <h2 class="card-title">Course Dashboard</h2>
+                                    @* <p class="card-text">Monitor student progress, upcoming deadlines, and announcements in a unified, real-time dashboard.</p> *@
+                                </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="d-flex justify-content-center">
+                            <div class="card shadow-sm homeCard w-75 d-flex align-content-center justify-content-center" style="z-index:2;position:relative;padding:150px 0;">
+                                <a asp-controller="Agendas" asp-action="Index" class="text-decoration-none text-dark">
+                                <div class="card-body">
+                                    <h2 class="card-title">Resource Sharing</h2>
+                                    @* <p class="card-text">Upload and share course materials, assignments, and helpful documents with students easily.</p> *@
+                                </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#featureCarousel" data-bs-slide="prev" >
+                    <span class="carousel-control-prev-icon" style="background-color:gray;border-radius:10%"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#featureCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" style="background-color:gray;border-radius:10%"></span>
+                </button>
+            </div>
+
+            
+
+        </div>
+        <div class="col-6">
+            <img src="/output.jpg" alt="Teaching assistant Image" style="border-radius:20px;transform:scale(.9);margin:auto"/>
+        </div>
+    </div>
 </div>

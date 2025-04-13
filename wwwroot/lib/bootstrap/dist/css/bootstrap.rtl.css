@@ -7690,7 +7690,7 @@ textarea.form-control-lg {
   height: 75% !important;
 }
 
-.h-100 {
+. {
   height: 100% !important;
 }
 
@@ -7698,15 +7698,15 @@ textarea.form-control-lg {
   height: auto !important;
 }
 
-.mh-100 {
+.m {
   max-height: 100% !important;
 }
 
-.vh-100 {
+.v {
   height: 100vh !important;
 }
 
-.min-vh-100 {
+.min-v {
   min-height: 100vh !important;
 }
 
