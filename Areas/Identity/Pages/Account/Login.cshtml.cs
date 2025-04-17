@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using TASM.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace TASM.Areas.Identity.Pages.Account
 {
@@ -145,5 +146,7 @@ namespace TASM.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+       
     }
+
 }
