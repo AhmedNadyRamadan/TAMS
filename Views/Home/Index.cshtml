@@ -12,6 +12,26 @@
 
 <div class="container py-5">
     <div class="text-center mb-5">
+        @{
+            var message = TempData["Message"] as string;
+            var joinUrl = TempData["JoinUrl"] as string;
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                <div class="alert alert-success" role="alert">
+                    @message
+                </div>
+            }
+
+            if (!string.IsNullOrEmpty(joinUrl))
+            {
+                <div class="alert alert-info" role="alert">
+                    Your meeting has been created successfully! You can join the meeting using the following link:
+                    <a href="@joinUrl" target="_blank" class="btn btn-primary">Join Meeting</a>
+                </div>
+            }
+        }
+
         <h1 class="display-5 fw-bold">Welcome to TAMS</h1>
         <p class="lead text-muted">
             Your centralized Teaching Assistant Management System to help you stay organized, efficient, and connected.
