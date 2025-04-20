@@ -1,0 +1,61 @@
+﻿@model TASM.Models.Agenda
+
+@{
+    ViewData["Title"] = "Create Agenda";
+}
+
+<div class="container py-4" style="border-radius: 10px; margin-top: 20px;">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-lg border-0">
+                <div class="card-header text-white" style="background-color: #0779E4; border-radius: 5px 5px 0 0;">
+                    <h2 class="mb-0 py-2">Create New Agenda</h2>
+                </div>
+                <div class="card-body" style="background-color: white;">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Lab.Name" class="control-label fw-bold" style="color: #4CBBB9;">Lab name</label>
+                            <input asp-for="Lab.Name" class="form-control" value="@ViewBag.LabName" disabled
+                                    style="border-color: #77D8D8; border-radius: 6px;"></input>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            @* <label asp-for="TaId" class="control-label fw-bold" style="color: #4CBBB9;"></label> *@
+                            <input asp-for="TaId" class="form-control" value="@ViewBag.TaId" disabled hidden
+                                    style="border-color: #77D8D8; border-radius: 6px;"></input>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="TopicName" class="control-label fw-bold" style="color: #4CBBB9;">Topic name</label>
+                            <input asp-for="TopicName" class="form-control" style="border-color: #77D8D8; border-radius: 6px;" />
+                            <span asp-validation-for="TopicName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label asp-for="Resources" class="control-label fw-bold" style="color: #4CBBB9;"></label>
+                            <input asp-for="Resources" class="form-control" style="border-color: #77D8D8; border-radius: 6px;" />
+                            <span asp-validation-for="Resources" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn text-white" style="background-color: #77D8D8;">
+                                <i class="bi bi-arrow-left"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn text-white" style="background-color: #0779E4;">
+                                <i class="bi bi-plus-circle"></i> Create
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

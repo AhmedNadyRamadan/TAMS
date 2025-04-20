@@ -12,6 +12,26 @@
 
 <div class="container py-5">
     <div class="text-center mb-5">
+        @{
+            var message = TempData["Message"] as string;
+            var joinUrl = TempData["JoinUrl"] as string;
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                <div class="alert alert-success" role="alert">
+                    @message
+                </div>
+            }
+
+            if (!string.IsNullOrEmpty(joinUrl))
+            {
+                <div class="alert alert-info" role="alert">
+                    Your meeting has been created successfully! You can join the meeting using the following link:
+                    <a href="@joinUrl" target="_blank" class="btn btn-primary">Join Meeting</a>
+                </div>
+            }
+        }
+
         <h1 class="display-5 fw-bold">Welcome to TAMS</h1>
         <p class="lead text-muted">
             Your centralized Teaching Assistant Management System to help you stay organized, efficient, and connected.
@@ -75,9 +95,9 @@
                     <div class="carousel-item">
                         <div class="d-flex justify-content-center">
                             <div class="card shadow-sm homeCard w-75 d-flex align-content-center justify-content-center" style="z-index:2;position:relative;padding:150px 0;">
-                                <a asp-controller="Courses" asp-action="Index" class="text-decoration-none text-dark">
+                                <a asp-controller="Agenda" asp-action="Index" class="text-decoration-none text-dark">
                                 <div class="card-body">
-                                    <h2 class="card-title">Course Dashboard</h2>
+                                    <h2 class="card-title">Agenda Dashboard</h2>
                                     @* <p class="card-text">Monitor student progress, upcoming deadlines, and announcements in a unified, real-time dashboard.</p> *@
                                 </div>
                                 </a>

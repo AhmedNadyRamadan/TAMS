@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace TASM.Models;
 
+    [Index(nameof(Name),IsUnique = true)]
+    [Index(nameof(Email),IsUnique = true)]
 public partial class Ta
 {
     public int Id { get; set; }
+
 
     public string Name { get; set; } = null!;
 

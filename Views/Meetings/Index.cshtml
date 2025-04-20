@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        :root {
+            --primary: #0779E4;
+            --secondary: #4CBBB9;
+            --light-teal: #77D8D8;
+            --pale-yellow: #EFF3C6;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border: none;
+            background-color: var(--white);
+        }
+
+        .card-header {
+            background-color: var(--primary);
+            color: var(--white);
+            border-radius: 15px 15px 0 0 !important;
+            padding: 20px;
+            font-weight: 600;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #444;
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 0.25rem rgba(76, 187, 185, 0.25);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+            .btn-primary:hover, .btn-primary:focus {
+                background-color: #0666C5;
+                border-color: #0666C5;
+            }
+
+        .form-check-input:checked {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+        }
+
+        .input-group-text {
+            background-color: var(--light-teal);
+            color: var(--white);
+            border: 1px solid var(--light-teal);
+        }
+
+        .heading-icon {
+            margin-right: 10px;
+        }
+
+        .form-floating label {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h2 class="mb-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-camera-video heading-icon" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5z" />
+                            </svg>
+                            Create Zoom Meeting
+                        </h2>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="post" asp-action="CreateMeeting">
+                            <div class="mb-4">
+                                <div class="form-floating">
+                                    <input type="text" id="Topic" name="Topic" class="form-control" value="@Model.Topic" required  />
+                                    <label for="Topic">Meeting Topic</label>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="form-floating">
+                                    <input type="number" id="Duration" name="Duration" class="form-control"
+                                           value="@Model.Duration" required placeholder="Duration" />
+                                    <label for="Duration">Meeting Duration (minutes)</label>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="form-floating">
+                                    <input type="datetime-local" id="StartTime" name="StartTime" class="form-control"
+                                           value="@Model.StartTime.ToString("yyyy-MM-ddTHH:mm")" required placeholder="Start Time" />
+                                    <label for="StartTime">Start Time</label>
+                                </div>
+                                <small id="startTimeError" class="text-danger" style="display: none;">Start time cannot be in the past.</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" id="HostVideo" name="HostVideo" class="form-check-input" checked="@Model.HostVideo" />
+                                    <label class="form-check-label" for="HostVideo">Host Video</label>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" id="ParticipantVideo" name="ParticipantVideo" class="form-check-input" checked="@Model.ParticipantVideo" />
+                                    <label class="form-check-label" for="ParticipantVideo">Participant Video</label>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary px-5 py-2">
+                                    Create Meeting
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Validate start time to not be in the past
+        document.getElementById('StartTime').addEventListener('change', function() {
+            const selectedTime = new Date(this.value);
+            const currentTime = new Date();
+
+            if (selectedTime < currentTime) {
+                document.getElementById('startTimeError').style.display = 'block';
+            } else {
+                document.getElementById('startTimeError').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
