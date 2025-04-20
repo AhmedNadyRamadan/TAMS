@@ -1,4 +1,4 @@
-html {
+/*html {
   font-size: 14px;
 }
 
@@ -38,3 +38,109 @@ a{
     text-decoration:none;
     color:black;
 }
+
+*/
+
+/* General Layout */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff; /* White background */
+    color: #333; /* Dark text for readability */
+}
+
+/* Header */
+header {
+    background-color: #0779e4; /* Blue background */
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+    header h1 {
+        font-size: 2.5rem;
+    }
+
+/* Navigation */
+nav {
+    background-color: #4cbbb9; /* Teal background */
+    padding: 10px;
+    text-align: center;
+}
+
+    nav a {
+        color: white;
+        margin: 0 15px;
+        text-decoration: none;
+        font-size: 1.1rem;
+    }
+
+        nav a:hover {
+            color: #eff3c6; /* Light yellow */
+        }
+
+/* Footer */
+footer {
+    background-color: #0779e4; /* Blue background */
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Dashboard / Cards */
+.dashboard-card {
+    background-color: #77d8d8; /* Light blue background */
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .dashboard-card h3 {
+        font-size: 1.8rem;
+    }
+
+    .dashboard-card p {
+        font-size: 1.2rem;
+    }
+
+/* Buttons */
+.btn-primary {
+    background-color: #0779e4; /* Blue */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+    .btn-primary:hover {
+        background-color: #4cbbb9; /* Teal */
+    }
+
+
+/* General Nav Link Style */
+.nav-custom {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #ffffff !important;
+    padding: 0.75rem 1.2rem;
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    transition: none; /* Remove hover transitions */
+}
+
+    /* Remove hover effect entirely */
+    .nav-custom:hover {
+        color: #ffffff !important;
+        background-color: transparent !important;
+    }
+
+    /* Highlight only the active (opened) page */
+    .nav-custom.active,
+    .nav-custom[aria-current="page"] {
+        color: #000000 !important; 
+        font-weight: 700;
+        text-decoration: solid;
+    }
