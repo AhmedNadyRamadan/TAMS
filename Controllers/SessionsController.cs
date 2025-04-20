@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,23 +10,23 @@ using TASM.Models;
 
 namespace TASM.Controllers
 {
-    //[Authorize]
-    public class LabsController : Controller
+    public class SessionsController : Controller
     {
         private readonly TamsContext _context;
 
-        public LabsController(TamsContext context)
+        public SessionsController(TamsContext context)
         {
             _context = context;
         }
 
-        // GET: Labs
+        // GET: Sessions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Labs.ToListAsync());
+            var tamsContext = _context.Sessions.Include(s => s.Lab);
+            return View(await tamsContext.ToListAsync());
         }
 
-        // GET: Labs/Details/5
+        // GET: Sessions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,39 +34,42 @@ namespace TASM.Controllers
                 return NotFound();
             }
 
-            var lab = await _context.Labs
+            var session = await _context.Sessions
+                .Include(s => s.Lab)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (lab == null)
+            if (session == null)
             {
                 return NotFound();
             }
 
-            return View(lab);
+            return View(session);
         }
 
-        // GET: Labs/Create
+        // GET: Sessions/Create
         public IActionResult Create()
         {
+            ViewData["LabId"] = new SelectList(_context.Labs, "Id", "Id");
             return View();
         }
 
-        // POST: Labs/Create
+        // POST: Sessions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,TotalDegree,NoOfSessions")] Lab lab)
+        public async Task<IActionResult> Create([Bind("Id,LabId,Date")] Session session)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(lab);
+                _context.Add(session);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(lab);
+            ViewData["LabId"] = new SelectList(_context.Labs, "Id", "Id", session.LabId);
+            return View(session);
         }
 
-        // GET: Labs/Edit/5
+        // GET: Sessions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,22 +77,23 @@ namespace TASM.Controllers
                 return NotFound();
             }
 
-            var lab = await _context.Labs.FindAsync(id);
-            if (lab == null)
+            var session = await _context.Sessions.FindAsync(id);
+            if (session == null)
             {
                 return NotFound();
             }
-            return View(lab);
+            ViewData["LabId"] = new SelectList(_context.Labs, "Id", "Id", session.LabId);
+            return View(session);
         }
 
-        // POST: Labs/Edit/5
+        // POST: Sessions/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,TotalDegree,NoOfSessions")] Lab lab)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,LabId,Date")] Session session)
         {
-            if (id != lab.Id)
+            if (id != session.Id)
             {
                 return NotFound();
             }
@@ -99,12 +102,12 @@ namespace TASM.Controllers
             {
                 try
                 {
-                    _context.Update(lab);
+                    _context.Update(session);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LabExists(lab.Id))
+                    if (!SessionExists(session.Id))
                     {
                         return NotFound();
                     }
@@ -115,10 +118,11 @@ namespace TASM.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(lab);
+            ViewData["LabId"] = new SelectList(_context.Labs, "Id", "Id", session.LabId);
+            return View(session);
         }
 
-        // GET: Labs/Delete/5
+        // GET: Sessions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -126,34 +130,35 @@ namespace TASM.Controllers
                 return NotFound();
             }
 
-            var lab = await _context.Labs
+            var session = await _context.Sessions
+                .Include(s => s.Lab)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (lab == null)
+            if (session == null)
             {
                 return NotFound();
             }
 
-            return View(lab);
+            return View(session);
         }
 
-        // POST: Labs/Delete/5
+        // POST: Sessions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var lab = await _context.Labs.FindAsync(id);
-            if (lab != null)
+            var session = await _context.Sessions.FindAsync(id);
+            if (session != null)
             {
-                _context.Labs.Remove(lab);
+                _context.Sessions.Remove(session);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LabExists(int id)
+        private bool SessionExists(int id)
         {
-            return _context.Labs.Any(e => e.Id == id);
+            return _context.Sessions.Any(e => e.Id == id);
         }
     }
 }

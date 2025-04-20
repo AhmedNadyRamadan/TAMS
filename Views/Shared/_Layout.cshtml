@@ -16,14 +16,14 @@
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0779e4;">
             <div class="container">
                 <!-- Logo and Brand Name -->
-                <a class="navbar-brand d-flex align-items-center" href="#">
+                <a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="">
                     <img src="/images/logo.avif"
                          alt="TAMS Logo"
                          width="60"
                          height="60"
                          class="rounded-circle me-2"
                          style="object-fit: cover; margin-top: -5px;">
-                    <span class="fs-4 fw-bold text-white">TAMS</span>
+                    <span class="fs-4 fw-bold text-white" asp-controller="Home" asp-action="">TAMS</span>
                 </a>
 
                 <!-- Mobile Toggle Button -->
@@ -35,16 +35,16 @@
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link nav-custom active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link nav-custom active" aria-current="page" asp-controller="Home" asp-action="">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link nav-custom" href="#">Labs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-custom" href="#">Agendas</a>
+                            <a class="nav-link nav-custom" asp-controller="Agenda" asp-action="Index">Agendas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-custom" href="#">Meetings</a>
+                            <a class="nav-link nav-custom" asp-controller="Meetings" asp-action="Index">Meetings</a>
                         </li>
                     </ul>
                 </div>

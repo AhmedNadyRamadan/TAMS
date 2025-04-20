@@ -11,7 +11,7 @@ using TASM.Models;
 
 namespace TASM.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class StudentsController : Controller
     {
         private readonly TamsContext _context;

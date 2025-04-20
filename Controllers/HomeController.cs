@@ -23,7 +23,7 @@ namespace TASM.Controllers
             {
                 LabsThisWeek = _context.Labs.Count(), 
                 UpcomingSessions = _context.Sessions.Count(s => s.Date > DateOnly.FromDateTime(DateTime.Now)),
-                AttendanceRate = 85, 
+                AttendanceRate = 85,
                 NextMeeting = "Monday, April 21st at 10:00 AM" 
             };
 
