@@ -14,8 +14,27 @@
         </p>
     </div>
 
-   @*  @if (SignInManager.IsSignedIn(User))
-    { *@
+    @if (SignInManager.IsSignedIn(User))
+    {
+        
+            var message = TempData["Message"] as string;
+            var joinUrl = TempData["JoinUrl"] as string;
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                <div class="alert alert-success" role="alert">
+                    @message
+                </div>
+            }
+
+            if (!string.IsNullOrEmpty(joinUrl))
+            {
+                <div class="alert alert-info" role="alert">
+                    Your meeting has been created successfully! You can join the meeting using the following link:
+                    <a href="@joinUrl" target="_blank" class="btn btn-primary">Join Meeting</a>
+                </div>
+            }
+        
         <!-- Cards for Dashboard Stats -->
         <div class="row g-4">
             <div class="col-md-4">
@@ -65,7 +84,9 @@
                 </div>
             </div>
         </div>
-   @*  } *@
+    }else{
+        <partial name="_LoginPartial" />
+    }
 </div>
 
 <!-- Bootstrap JS -->

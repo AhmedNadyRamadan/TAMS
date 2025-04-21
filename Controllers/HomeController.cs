@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TASM.Data;
 using TASM.Models;
@@ -10,11 +11,12 @@ namespace TASM.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly TamsContext _context;
-
-        public HomeController(ILogger<HomeController> logger, TamsContext context)
+        private SignInManager<IdentityUser> _SignInManager;
+        public HomeController(ILogger<HomeController> logger, TamsContext context,SignInManager<IdentityUser> SignInManager)
         {
             _logger = logger;
             _context = context;
+            _SignInManager = SignInManager;
         }
 
         public IActionResult Index()
@@ -26,6 +28,10 @@ namespace TASM.Controllers
                 AttendanceRate = 85,
                 NextMeeting = "Monday, April 21st at 10:00 AM" 
             };
+             if (!_SignInManager.IsSignedIn(User))
+                {
+                    return Redirect("/Identity/Account/Login");
+                }
 
             return View(dashboardData);
         }
