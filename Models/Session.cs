@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace TASM.Models;
+
+public partial class Session
+{
+    public int Id { get; set; }
+
+    public int? LabId { get; set; }
+
+    public DateOnly Date { get; set; }
+    [NotMapped]
+    public object Instructor { get; internal set; }
+
+    public virtual Lab? Lab { get; set; }
+
+    public virtual ICollection<SessionsStudent> SessionsStudents { get; set; } = new List<SessionsStudent>();
+    
+}

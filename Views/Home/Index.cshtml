@@ -1,0 +1,129 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@model TASM.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">Welcome to TAMS</h1>
+        <p class="lead text-muted">
+            Your centralized Teaching Assistant Management System to help you stay organized, efficient, and connected.
+        </p>
+    </div>
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @* Row 1: 3 Cards *@
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card text-white" style="background-color: #4cbbb9;">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Sessions</h5>
+                        <p class="card-text fs-4">@Model.TotalSessions</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-white" style="background-color: #4cbbb9;">
+                    <div class="card-body">
+                        <h5 class="card-title">Completed Sessions</h5>
+                        <p class="card-text fs-4">@Model.CompletedSessions</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-white" style="background-color: #4cbbb9;">
+                    <div class="card-body">
+                        <h5 class="card-title">Remaining Sessions</h5>
+                        <p class="card-text fs-4">@Model.RemainingSessions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* Row 2: 2 Cards *@
+        <div class="row g-4 mt-4">
+            <div class="col-md-6">
+                <div class="card text-white" style="background-color: #4cbbb9;">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Students</h5>
+                        <p class="card-text fs-4">@Model.TotalStudents</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card text-white" style="background-color: #4cbbb9;">
+                    <div class="card-body">
+                        <h5 class="card-title">Attendance Rate</h5>
+                        <p class="card-text fs-4">@Model.AttendanceRate%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* Row 3: 1 Card (Upcoming Session) *@
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="alert alert-info" role="alert">
+                    <h4 class="alert-heading">Next Session</h4>
+                    <p>@Model.UpcomingSessionDate</p>
+                </div>
+            </div>
+        </div>
+
+        @* Row 4: Graph *@
+        <div class="row g-4 mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Attendance per Session</h5>
+                        <canvas id="attendanceGraph"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @* <partial name="_LoginPartial" /> *@
+    }
+
+<!-- JavaScript for Graph -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('attendanceGraph').getContext('2d');
+    const attendanceGraph = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: @Html.Raw(Json.Serialize(Model.SessionAttendanceGraphs.Select(s => s.SessionDate.ToString()).ToArray())),
+            datasets: [{
+                label: 'Attendance Rate (%)',
+                data: @Html.Raw(Json.Serialize(Model.SessionAttendanceGraphs.Select(s => s.AttendanceRate).ToArray())),
+                borderColor: 'rgba(75, 192, 192, 1)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Session Date'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Attendance Rate (%)'
+                    },
+                    min: 0,
+                    max: 100
+                }
+            }
+        }
+    });
+</script>
