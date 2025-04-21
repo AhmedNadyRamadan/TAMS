@@ -109,18 +109,23 @@ namespace TASM.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-         
+
         }
+        [BindProperty]
+        public int LabId { get; set; }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+            ViewData["labs"] = new SelectList(_TamsContext.Labs, "Id", "Name");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            var id = LabId;
+            Console.WriteLine(id);
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
@@ -129,7 +134,8 @@ namespace TASM.Areas.Identity.Pages.Account
                 Ta ta = new Ta();
                 ta.Email = Input.Email;
                 ta.Name = Input.Username;
-
+                ta.LabId = id;
+                
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.EmailConfirmed = true;
@@ -141,9 +147,9 @@ namespace TASM.Areas.Identity.Pages.Account
                     await _TamsContext.Tas.AddAsync(ta);
                     await _TamsContext.SaveChangesAsync();
 
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    // var userId = await _userManager.GetUserIdAsync(user);
+                    // var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    // code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
 
                     await _signInManager.SignInAsync(user, isPersistent: false);

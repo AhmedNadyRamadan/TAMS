@@ -32,7 +32,11 @@
                                 @Html.DisplayNameFor(model => model.Resources)
                             </dt>
                             <dd class="col-sm-9">
-                                @ViewData["Resources"]
+                                <ol>
+                                @foreach(var item in ViewData["Resources"] as List<string>){
+                                    <li><a href="@item" target="_blank" >@item</a></li>
+                                }
+                                </ol>
                             </dd>
 
 

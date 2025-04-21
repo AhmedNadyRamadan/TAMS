@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +12,7 @@ using TASM.Models;
 
 namespace TASM.Controllers
 {
+    [Authorize]
     public class AgendaController : Controller
     {
         private readonly TamsContext _context;
@@ -25,12 +27,13 @@ namespace TASM.Controllers
         // GET: Agenda
         public async Task<IActionResult> Index()
         {
-            var tamsContext = _context.Agendas.Include(a => a.Lab).Include(a => a.Ta);
             var username = _userManager.GetUserName(User);
 
             var ta = await _context.Tas
-                                .Include(t => t.Lab)
-                                .FirstOrDefaultAsync(t => t.Name == username);
+                            .Include(t => t.Lab)
+                            .FirstOrDefaultAsync(t => t.Name == username);
+
+            var tamsContext = _context.Agendas.Where(a=>a.TaId == ta.Id).Include(a => a.Lab).Include(a => a.Ta);
             if (ta != null)
             {
                 var labId = ta.LabId;
@@ -59,12 +62,12 @@ namespace TASM.Controllers
             var agenda = await _context.Agendas
                 .Include(a => a.Lab)
                 .Include(a => a.Ta)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            ViewData["Resources"] = agenda.Resources.Split(',').ToList();
+                .FirstOrDefaultAsync(m => m.Id == id && m.TaId == ta.Id);
             if (agenda == null)
             {
                 return NotFound();
             }
+            ViewData["Resources"] = agenda.Resources.Split(',').ToList();
 
             return View(agenda);
         }

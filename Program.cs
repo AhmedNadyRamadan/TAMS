@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<TamsContext>(options =>
-   options.UseSqlServer(builder.Configuration.GetConnectionString("TamsContext")));
+   options.UseSqlServer(builder.Configuration.GetConnectionString("TamsContextLinux")));
 
 // Fix for CS1061: Ensure the required Identity package is referenced and the correct method is used
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)

@@ -1,11 +1,13 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using TASM.ViewModels;
 
 namespace TASM.Controllers
 {
+    [Authorize]
     public class MeetingsController : Controller
     {
         private readonly IConfiguration _configuration;
