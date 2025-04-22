@@ -13,7 +13,6 @@ public partial class TamsContext : IdentityDbContext<IdentityUser>
         : base(options)
     {
     }
-
     public virtual DbSet<Agenda> Agendas { get; set; }
 
     public virtual DbSet<Lab> Labs { get; set; }
@@ -25,6 +24,5 @@ public partial class TamsContext : IdentityDbContext<IdentityUser>
     public virtual DbSet<Student> Students { get; set; }
 
     public virtual DbSet<Ta> Tas { get; set; }
-
-   
 }
+

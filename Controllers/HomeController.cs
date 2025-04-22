@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,60 +23,85 @@ namespace TASM.Controllers
 
         public IActionResult Index()
         {
-            var currentLabId = 1; // This should be dynamically fetched based on the current lab or selection
+            // Get the current user's ID
+            var userId = 1;
 
+            // Get the lab associated with the current user
             var lab = _context.Labs
                 .Include(l => l.Sessions)
-                .ThenInclude(s => s.SessionsStudents) // Ensure SessionsStudents is included
-                .FirstOrDefault(l => l.Id == currentLabId);
-
-            if (lab == null) return NotFound();
-
-            var completedSessions = lab.Sessions.Count(s => s.Date <= DateOnly.FromDateTime(DateTime.Now));
-            var remainingSessions = lab.Sessions.Count(s => s.Date > DateOnly.FromDateTime(DateTime.Now));
-
-            var attendanceGraphs = lab.Sessions.Select(s => new SessionAttendanceGraph
+                    .ThenInclude(s => s.SessionsStudents)
+                .Include(l => l.Students)
+                .FirstOrDefault(l => l.TaId == userId);
+            if (lab == null)
             {
-                SessionDate = s.Date,
-                AttendanceRate = s.SessionsStudents.Any() ? s.SessionsStudents.Count(ss => ss.Attended) * 100.0 / s.SessionsStudents.Count() : 0
-            }).ToList();
+                return NotFound("Lab not found.");
+            }
+            // Get the lab's sessions
+            var sessions = lab.Sessions.ToList();
+            // Get the lab's students
+            var students = lab.Students.ToList();
+            // Get the lab's attendance records
+            var attendanceRecords = _context.SessionsStudents
+                .Include(ss => ss.Session)
+                .Include(ss => ss.Student)
+                .Where(ss => ss.Session.LabId == lab.Id)
+                .ToList();
 
-            var totalStudents = lab.Students.Count;
-            var totalAttendanceRecords = lab.Sessions.Sum(s => s.SessionsStudents.Count);
-            var totalAttendedRecords = lab.Sessions.Sum(s => s.SessionsStudents.Count(ss => ss.Attended));
-
-            var upcomingSession = lab.Sessions
+            // Get the lab's upcoming sessions
+            var upcomingSessions = sessions
                 .Where(s => s.Date > DateOnly.FromDateTime(DateTime.Now))
                 .OrderBy(s => s.Date)
-                .FirstOrDefault();
+                .ToList();
+            // Get the lab's completed sessions
+            var completedSessions = sessions
+                .Where(s => s.Date < DateOnly.FromDateTime(DateTime.Now))
+                .OrderByDescending(s => s.Date)
+                .ToList();
+            // Get the lab's remaining sessions
+            var remainingSessions = sessions
+                .Where(s => s.Date >= DateOnly.FromDateTime(DateTime.Now))
+                .OrderBy(s => s.Date)
+                .ToList();
 
+            // Get the lab's attendance rate
+            var totalAttendance = attendanceRecords.Count;
+            // Get the lab's attendance graphs
+            var attendanceGraphs = sessions
+                .Select(s => new SessionAttendanceGraph
+                {
+                    SessionDate = s.Date,
+                    AttendanceRate = (double)attendanceRecords.Count(ss => ss.SessionId == s.Id) / students.Count * 100
+                })
+                .ToList();
+            // Create the dashboard data
             var dashboardData = new DashboardViewModel
             {
-                TotalSessions = lab.Sessions.Count,
-                CompletedSessions = completedSessions,
-                RemainingSessions = remainingSessions,
-                TotalStudents = totalStudents,
-                AttendanceRate = totalAttendanceRecords > 0
-                    ? (totalAttendedRecords * 100.0) / totalAttendanceRecords
-                    : 0,
-                UpcomingSessionDate = upcomingSession?.Date ?? default(DateOnly),
+                TotalSessions = sessions.Count,
+                CompletedSessions = completedSessions.Count,
+                RemainingSessions = remainingSessions.Count,
+                TotalStudents = students.Count,
+                AttendanceRate = totalAttendance > 0 ? (double)attendanceRecords.Count / totalAttendance * 100 : 0,
+                UpcomingSessionDate = upcomingSessions.FirstOrDefault()?.Date ?? DateOnly.FromDateTime(DateTime.Now),
                 SessionAttendanceGraphs = attendanceGraphs
             };
 
+            // Check if the user is signed in
+            // If the user is not signed in, redirect to the login page
+            // If the user is signed in, return the dashboard view
             if (!_SignInManager.IsSignedIn(User))
             {
                 return Redirect("/Identity/Account/Login");
             }
-
+            // Return the dashboard view with the data
             return View(dashboardData);
         }
 
-
+        // GET: /Home/Privacy
         public IActionResult Privacy()
         {
             return View();
         }
-
+        // GET: /Home/Error
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

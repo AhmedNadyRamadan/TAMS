@@ -12,9 +12,9 @@ public partial class SessionsStudent
     public int StudentId { get; set; }
 
     public int? AttendanceDegree { get; set; }
-
-    public virtual Session Session { get; set; } = null!;
-
-    public virtual Student Student { get; set; } = null!;
     public bool Attended { get; internal set; }
+
+    public virtual Session Session { get; set; } 
+
+    public virtual Student Student { get; set; } 
 }

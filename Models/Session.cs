@@ -11,8 +11,6 @@ public partial class Session
     public int? LabId { get; set; }
 
     public DateOnly Date { get; set; }
-    [NotMapped]
-    public object Instructor { get; internal set; }
 
     public virtual Lab? Lab { get; set; }
 
