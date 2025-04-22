@@ -131,16 +131,8 @@ footer {
     transition: none; /* Remove hover transitions */
 }
 
-    /* Remove hover effect entirely */
-    .nav-custom:hover {
-        color: #ffffff !important;
-        background-color: transparent !important;
-    }
+.nav-link.active {
+    color: black !important;
+}
 
-    /* Highlight only the active (opened) page */
-    .nav-custom.active,
-    .nav-custom[aria-current="page"] {
-        color: #000000 !important; 
-        font-weight: 700;
-        text-decoration: solid;
-    }
+

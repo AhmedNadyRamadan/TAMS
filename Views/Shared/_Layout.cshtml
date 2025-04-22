@@ -35,25 +35,24 @@
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link nav-custom active" aria-current="page" asp-controller="Home" asp-action="">Home</a>
+                            <a class="nav-link nav-custom @(ViewContext.RouteData.Values["controller"].ToString() == "Home" ? "active" : "")" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-custom" href="#">Labs</a>
+                            <a class="nav-link nav-custom @(ViewContext.RouteData.Values["controller"].ToString() == "Labs" ? "active" : "")" asp-controller="Labs" asp-action="Index">Labs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-custom" asp-controller="Agenda" asp-action="Index">Agendas</a>
+                            <a class="nav-link nav-custom @(ViewContext.RouteData.Values["controller"].ToString() == "Agenda" ? "active" : "")" asp-controller="Agenda" asp-action="Index">Agendas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-custom" asp-controller="Meetings" asp-action="Index">Meetings</a>
+                            <a class="nav-link nav-custom @(ViewContext.RouteData.Values["controller"].ToString() == "Meetings" ? "active" : "")" asp-controller="Meetings" asp-action="Index">Meetings</a>
                         </li>
                         <div class="d-flex border justify-content-center align-items-center ms-4 rounded" style="background-color:#6bb5fa;">
-                        <partial name="_LoginPartial" />
+                            <partial name="_LoginPartial" />
                         </div>
-                    </div>
                     </ul>
                 </div>
-
             </div>
+        </nav>
         </nav>
 
 	</header>
